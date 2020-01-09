@@ -10,7 +10,8 @@ namespace SharpnadoExemplo
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new InicialPage());
+           // MainPage = (new MainPage());
         }
 
         protected override void OnStart()

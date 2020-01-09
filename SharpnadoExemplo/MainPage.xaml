@@ -2,7 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:c="clr-namespace:SharpnadoExemplo.Converters"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="clr-namespace:SharpnadoExemplo.Converters"
+             xmlns:renderedViews="clr-namespace:Sharpnado.Presentation.Forms.RenderedViews;assembly=Sharpnado.Presentation.Forms"
+             xmlns:customViews="clr-namespace:Sharpnado.Presentation.Forms.CustomViews;assembly=Sharpnado.Presentation.Forms"
              mc:Ignorable="d" x:Class="SharpnadoExemplo.MainPage">
 
 
@@ -12,55 +15,50 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ListView HasUnevenRows="true"
-              IsRefreshing = "{Binding Ocupado}"
-              ItemsSource="{Binding Pokemons}"
-             CachingStrategy="RecycleElement" 
-              >
-        
-        <ListView.ItemTemplate>
-            
-            <DataTemplate>
-                
-                <ViewCell>
-                        <Grid Padding="20,30" >
+    <renderedViews:HorizontalListView CollectionPadding="16"
+                                  ItemSpacing="8"
+                                  EnableDragAndDrop="True"
+                                  ItemWidth="110"
+                                  ItemHeight="120"
+                                  ItemsSource="{Binding Pokemons}"
+                                  ListLayout="Grid">
+    <renderedViews:HorizontalListView.ItemTemplate>
+        <DataTemplate>
+            <renderedViews:DraggableViewCell x:Name="DraggableViewCell">
+                <ContentView>
+                    <renderedViews:MaterialFrame Margin="4"
+                                                 Elevation="4">
+
+                        <Frame.Triggers>
+                            <DataTrigger Binding="{Binding Source={x:Reference DraggableViewCell}, Path=IsDragAndDropping}"
+                                         TargetType="renderedViews:MaterialFrame"
+                                         Value="True">
+                                <Setter Property="Elevation" Value="8" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+
+                        <Grid ColumnSpacing="0" RowSpacing="0">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*" />
-                            
-                            </Grid.ColumnDefinitions>
-                        
-                            <Image HeightRequest="120" 
+
+                             <Image HeightRequest="120" 
                                    WidthRequest = "120"
                                    Source="{Binding Image, Converter={StaticResource imageFileCvt}}"
-                                   Grid.Row="0"
-                                   Grid.Column="0"
-                                   Grid.RowSpan ="2"/>
+                                   Grid.Row="0"/>
 
-                           
-                             <Label Grid.Row="0" 
-                                   Grid.Column="1"
-                                     FontSize="Medium"
-                                   Text="{Binding Id,StringFormat='#{0}'}"/>
-
-                            <Label Grid.Row="1" 
-                                   Grid.Column="1"
-                                   Text="{Binding Name}"
-                                   FontSize="Large"
-                                   TextColor="#FF5525"/>
-                     
-                        
+                            <Label Grid.Row="1"
+                                   FontSize="Small"
+                                   HorizontalTextAlignment="Center"
+                                   Text="{Binding Name}" />
                         </Grid>
-                </ViewCell>
-                
-            </DataTemplate>
-            
-        </ListView.ItemTemplate>
-        
-        
-    </ListView>
+                    </renderedViews:MaterialFrame>
+                </ContentView>
+            </renderedViews:DraggableViewCell>
+        </DataTemplate>
+    </renderedViews:HorizontalListView.ItemTemplate>
+</renderedViews:HorizontalListView>
+
+
 </ContentPage>
