@@ -13,8 +13,8 @@ namespace SharpnadoExemplo.ViewModels
     public class MainViewModel : BaseViewModel
     {
         //Anterior
-        public ObservableCollection<Pokemon> Pokemons { get; }
-      //  public ViewModelLoader<ObservableCollection<Teste>> Pokemons { get; }
+      //  public ObservableCollection<Pokemon> Pokemons { get; }
+        public ViewModelLoader<ObservableCollection<Pokemon>> Pokemons { get; }
         private readonly PokemonService _pokemonService;
 
        
@@ -23,12 +23,12 @@ namespace SharpnadoExemplo.ViewModels
         public MainViewModel()
         {
             //Anterior
-            Pokemons = new ObservableCollection<Pokemon>();
+           // Pokemons = new ObservableCollection<Pokemon>();
             _pokemonService = new PokemonService();
 
-            //Pokemons = new
-            //ViewModelLoader<ObservableCollection<Teste>>(null,
-            //    null);
+            Pokemons = new
+            ViewModelLoader<ObservableCollection<Pokemon>>(null,
+                null);
         }
 
        
@@ -40,17 +40,17 @@ namespace SharpnadoExemplo.ViewModels
             try
             {
                 //Antiga Logica de Carregamento
-                var pokemonsAPI = await _pokemonService.GetPokemonsAsync();
+                //var pokemonsAPI = await _pokemonService.GetPokemonsAsync();
 
-                Pokemons.Clear();
+                //Pokemons.Clear();
 
-                foreach (var pokemon in pokemonsAPI)
-                {
-                    pokemon.Image = GetImageStreamFromUrl(pokemon.Sprites.FrontDefault.AbsoluteUri);
-                    Pokemons.Add(pokemon);
-                }
+                //foreach (var pokemon in pokemonsAPI)
+                //{
+                //    pokemon.Image = GetImageStreamFromUrl(pokemon.Sprites.FrontDefault.AbsoluteUri);
+                //    Pokemons.Add(pokemon);
+                //}
 
-                // Pokemons.Load(CarregarPokemonsAsync);
+                 Pokemons.Load(async () => (new ObservableCollection<Pokemon>(await _pokemonService.GetPokemonsAsync())));
 
             }
             catch (Exception ex)
@@ -62,14 +62,6 @@ namespace SharpnadoExemplo.ViewModels
                 Ocupado = false;
             }
 
-        }
-
-
-
-        private async Task<ObservableCollection<Pokemon>> CarregarPokemonsAsync()
-        {
-            return new ObservableCollection<Pokemon>(
-            await _pokemonService.GetPokemonsAsync());
         }
 
         public static byte[] GetImageStreamFromUrl(string url)

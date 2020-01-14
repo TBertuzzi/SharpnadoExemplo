@@ -15,12 +15,14 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+     <customViews:TaskLoaderView  ViewModelLoader="{Binding Pokemons}">
+
     <renderedViews:HorizontalListView CollectionPadding="16"
                                   ItemSpacing="8"
                                   EnableDragAndDrop="True"
                                   ItemWidth="110"
                                   ItemHeight="120"
-                                  ItemsSource="{Binding Pokemons}"
+                                  ItemsSource="{Binding Pokemons.Result}"
                                   ListLayout="Grid">
     <renderedViews:HorizontalListView.ItemTemplate>
         <DataTemplate>
@@ -60,5 +62,6 @@
     </renderedViews:HorizontalListView.ItemTemplate>
 </renderedViews:HorizontalListView>
 
+          </customViews:TaskLoaderView>
 
 </ContentPage>
